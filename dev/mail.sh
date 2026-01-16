@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 # paru -S mailhog-bin
 # paru -S mailpit
-paru -S mailpit-bin
+paru -S --noconfirm mailpit-bin
 
 # sudo systemctl enable --now mailhog
 sudo systemctl enable --now mailpit

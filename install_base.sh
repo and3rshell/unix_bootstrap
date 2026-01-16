@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-sudo pacman -Sy
-sudo pacman -S archlinux-keyring
-sudo pacman -Su
+set -euo pipefail
+
+PACMAN_FLAGS=(--needed --noconfirm)
+
+sudo pacman -Syu "${PACMAN_FLAGS[@]}" archlinux-keyring
 
 corePackages=(
     "intel-ucode"
@@ -50,7 +52,7 @@ corePackages=(
 )
 
 echo -e "\n===========\n\n=> Installing pacman packages..."
-sudo pacman -S ${corePackages[*]} || exit 1
+sudo pacman -Syu "${PACMAN_FLAGS[@]}" "${corePackages[@]}" || exit 1
 
 echo -e "\n=> Enabling systemd units..."
 sudo systemctl enable --now NetworkManager bluetooth || exit 1
@@ -63,7 +65,7 @@ sudo chsh
 echo -e "\nFor user:"
 chsh
 
-if [ ! "$HOME" ]; then
+if [ -z "${HOME:-}" ]; then
     echo "HOME variable isn't set!"
     exit 1
 fi

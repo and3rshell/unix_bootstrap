@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
-sudo pacman -S i3-wm i3status
+set -euo pipefail
+
+PACMAN_FLAGS=(--needed --noconfirm)
 
 pacman_packages=(
+    "i3-wm"
+    "i3status"
     "polkit"
     "tmux"
     "stow"
@@ -47,7 +51,6 @@ pacman_packages=(
     "sed"
     "unrar"
     "zip"
-    "unzip"
     "tzdata"
     "whois"
     "xwallpaper"
@@ -92,7 +95,7 @@ pacman_packages=(
 #"vpnc"
 )
 
-sudo pacman -S ${pacman_packages[*]} || exit 1
+sudo pacman -Syu "${PACMAN_FLAGS[@]}" "${pacman_packages[@]}" || exit 1
 
 paru_packages=(
     "lf-bin"
@@ -114,8 +117,7 @@ paru_packages=(
 )
 
 for paru_package in "${paru_packages[@]}"; do
-    # paru -S "$paru_package" --noconfirm
-    paru -S "$paru_package"
+    paru -S --noconfirm "$paru_package"
 done
 
 echo -e "\nlsblk"

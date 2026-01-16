@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-sudo pacman -S mariadb
+set -euo pipefail
+
+PACMAN_FLAGS=(--needed --noconfirm)
+
+sudo pacman -Syu "${PACMAN_FLAGS[@]}" mariadb
 sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 
 sudo systemctl start mysqld

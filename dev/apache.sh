@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-sudo pacman -S apache php-fpm php-apache 
+set -euo pipefail
+
+PACMAN_FLAGS=(--needed --noconfirm)
+
+sudo pacman -Syu "${PACMAN_FLAGS[@]}" apache php-fpm php-apache 
 
 sudo systemctl enable --now httpd
 sudo systemctl enable --now php-fpm
