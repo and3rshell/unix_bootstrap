@@ -15,9 +15,12 @@ trap 'rm -rf "$PARU_TMP_DIR"' EXIT
 
 PACMAN_FLAGS=(--needed --noconfirm)
 
-sudo pacman -Syu "${PACMAN_FLAGS[@]}" base-devel
+read -rp "Install base-devel? [y/N] " answer
+if [ "$answer" == "y" ]; then
+    sudo pacman -Syu "${PACMAN_FLAGS[@]}" base-devel
+fi
 
-git clone https://aur.archlinux.org/paru-bin "$PARU_TMP_DIR"
+git clone https://aur.archlinux.org/paru "$PARU_TMP_DIR"
 (cd "$PARU_TMP_DIR" && makepkg -si)
 
 echo -e "\nSuccess"
