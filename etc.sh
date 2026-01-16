@@ -104,6 +104,7 @@ paru_packages=(
     # "abook"
     "nsxiv"
     "mmv-go"
+    "veracrypt-console-bin"
 
     # "burpsuite"
     # "postman-bin"
@@ -116,5 +117,9 @@ for paru_package in "${paru_packages[@]}"; do
     # paru -S "$paru_package" --noconfirm
     paru -S "$paru_package"
 done
+
+echo -e "\nlsblk"
+echo "sudo mount -t vfat /dev/sdbX /mnt/second-usb -o rw,umask=0000"
+echo -e "git@github.com:<username>/<repo>\n"
 
 echo -e "\nSuccess"
