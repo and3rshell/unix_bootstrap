@@ -8,7 +8,6 @@ pacman_packages=(
     "i3-wm"
     "i3status"
     "polkit"
-    "tmux"
     "stow"
     "picom"
     "arandr"
@@ -94,6 +93,7 @@ pacman_packages=(
 sudo pacman -Syu "${PACMAN_FLAGS[@]}" "${pacman_packages[@]}" || exit 1
 
 paru_packages=(
+    "tmux-git"
     "lf-bin"
     "zsh-fast-syntax-highlighting"
     "zsh-system-clipboard-git"
