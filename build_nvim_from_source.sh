@@ -8,14 +8,19 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 NVIM_TMP_DIR="$TMP_DIR/neovim"
 
+cleanup_nvim_tmp_dir() {
+    if [ -d "$NVIM_TMP_DIR" ]; then
+        rm -rf "$NVIM_TMP_DIR" 2>/dev/null || sudo rm -rf "$NVIM_TMP_DIR"
+    fi
+}
+
 if pgrep -x nvim >/dev/null; then
     killall -9 nvim
 fi
 
-rm -rf "$NVIM_TMP_DIR"
-trap 'rm -rf "$NVIM_TMP_DIR"' EXIT
+cleanup_nvim_tmp_dir
+trap cleanup_nvim_tmp_dir EXIT
 
-git clone "https://github.com/neovim/neovim" "$NVIM_TMP_DIR"
+git clone --branch stable --single-branch "https://github.com/neovim/neovim" "$NVIM_TMP_DIR"
 make -C "$NVIM_TMP_DIR" CMAKE_BUILD_TYPE=RelWithDebInfo
-git -C "$NVIM_TMP_DIR" checkout stable
 sudo make -C "$NVIM_TMP_DIR" install
