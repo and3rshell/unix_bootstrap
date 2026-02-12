@@ -23,16 +23,33 @@ hardware_packages=(
     "linux-headers"
     "$nvidia_driver_package"
     "nvidia-utils"
-    "lib32-nvidia-utils"
     "nvidia-settings"
     "opencl-nvidia"
     "egl-wayland"
     "libva-nvidia-driver"
     "vulkan-icd-loader"
-    "lib32-vulkan-icd-loader"
     "vulkan-tools"
     "nvidia-container-toolkit"
 )
+
+optional_hardware_packages=(
+    "lib32-nvidia-utils"
+    "lib32-vulkan-icd-loader"
+)
+
+missing_optional_packages=()
+for optional_pkg in "${optional_hardware_packages[@]}"; do
+    if pacman -Si "$optional_pkg" >/dev/null 2>&1; then
+        hardware_packages+=("$optional_pkg")
+    else
+        missing_optional_packages+=("$optional_pkg")
+    fi
+done
+
+if [ "${#missing_optional_packages[@]}" -gt 0 ]; then
+    echo "Skipping unavailable optional packages: ${missing_optional_packages[*]}"
+    echo "If you need 32-bit Vulkan/OpenGL support, enable [multilib] and re-run this script."
+fi
 
 echo -e "\n===========\n\n=> Installing AMD + NVIDIA packages..."
 sudo pacman -Syu "${PACMAN_FLAGS[@]}" "${hardware_packages[@]}" || exit 1

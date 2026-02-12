@@ -18,6 +18,7 @@ corePackages=(
     "wireless_tools"
     "wpa_supplicant"
     "openvpn"
+    "syncthing"
     "dialog"
     "mtools"
     "dosfstools"
@@ -50,6 +51,7 @@ corePackages=(
     "xdg-user-dirs"
     "xorg"
     "xorg-server"
+    "xorg-xinit"
     "xorg-xwininfo"
     "xorg-setxkbmap"
     "xorg-xprop"
@@ -62,6 +64,7 @@ sudo pacman -Syu "${PACMAN_FLAGS[@]}" "${corePackages[@]}" || exit 1
 echo -e "\n=> Enabling systemd units..."
 sudo systemctl enable --now NetworkManager bluetooth docker || exit 1
 systemctl --user enable --now pipewire pipewire-pulse wireplumber || exit 1
+systemctl --user enable --now syncthing.service || exit 1
 # sudo systemctl enable --now cups || exit 1
 
 TARGET_USER="${SUDO_USER:-${USER:-}}"
