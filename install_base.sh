@@ -2,20 +2,22 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=config.sh
+. "$SCRIPT_DIR/config.sh"
+
 PACMAN_FLAGS=(--needed --noconfirm)
 
 sudo pacman -Syu "${PACMAN_FLAGS[@]}" archlinux-keyring
 
 corePackages=(
-    "intel-ucode"
+    "amd-ucode"
     "xf86-input-libinput"
-    "xf86-video-intel"
-
     "networkmanager"
     "network-manager-applet"
     "wireless_tools"
     "wpa_supplicant"
-
+    "openvpn"
     "dialog"
     "mtools"
     "dosfstools"
@@ -24,11 +26,16 @@ corePackages=(
     "curl"
     "wget"
     "cmake"
+    "go"
     "socat"
+    "docker"
+    "docker-compose"
+    "lazydocker"
+    "dive"
+    "trivy"
     "openssh"
     "zsh"
     "zsh-autosuggestions"
-
     "bluez"
     "bluez-utils"
     "blueman"
@@ -39,7 +46,6 @@ corePackages=(
 	"pipewire-alsa"
 	"pipewire-jack"
 	"gst-plugin-pipewire"
-
     "xdg-utils"
     "xdg-user-dirs"
     "xorg"
@@ -47,7 +53,6 @@ corePackages=(
     "xorg-xwininfo"
     "xorg-setxkbmap"
     "xorg-xprop"
-    "xorg-xbacklight"
     "inetutils"
 )
 
@@ -55,9 +60,18 @@ echo -e "\n===========\n\n=> Installing pacman packages..."
 sudo pacman -Syu "${PACMAN_FLAGS[@]}" "${corePackages[@]}" || exit 1
 
 echo -e "\n=> Enabling systemd units..."
-sudo systemctl enable --now NetworkManager bluetooth || exit 1
+sudo systemctl enable --now NetworkManager bluetooth docker || exit 1
 systemctl --user enable --now pipewire pipewire-pulse wireplumber || exit 1
 # sudo systemctl enable --now cups || exit 1
+
+TARGET_USER="${SUDO_USER:-${USER:-}}"
+if [ -n "$TARGET_USER" ] && [ "$TARGET_USER" != "root" ] && id -u "$TARGET_USER" >/dev/null 2>&1; then
+    if ! id -nG "$TARGET_USER" | grep -qw docker; then
+        echo -e "\n=> Adding '$TARGET_USER' to docker group..."
+        sudo usermod -aG docker "$TARGET_USER" || exit 1
+        echo "Re-login is required for docker group membership to take effect."
+    fi
+fi
 
 echo -e "\n=> Change default shell to /bin/zsh"
 echo "For root:"
@@ -74,7 +88,25 @@ echo -e "\n=> Creating dirs..."
 [ ! -d "$HOME/.cache" ] && mkdir -v "$HOME/.cache"
 [ ! -f "$HOME/.cache/zsh_history" ] && touch "$HOME/.cache/zsh_history"
 [ ! -d "$HOME/tmp" ] && mkdir -v "$HOME/tmp"
-# [ ! -d "$HOME/.local/scripts" ] && mkdir -v "$HOME/.local/scripts"
+[ ! -d "$HOME/.local" ] && mkdir -v "$HOME/.local"
+
+if [ -z "${GIT_USERNAME:-}" ]; then
+    echo "GIT_USERNAME is not set in config.sh."
+    exit 1
+fi
+
+SCRIPTS_REPO_URL="git@github.com:${GIT_USERNAME}/scripts.git"
+SCRIPTS_DIR="$HOME/.local/scripts"
+
+if [ -d "$SCRIPTS_DIR/.git" ]; then
+    echo -e "\n=> Updating scripts repo in $SCRIPTS_DIR..."
+    git -C "$SCRIPTS_DIR" pull --ff-only || exit 1
+elif [ -d "$SCRIPTS_DIR" ]; then
+    echo -e "\n=> $SCRIPTS_DIR exists and is not a git repo; skipping clone."
+else
+    echo -e "\n=> Cloning $SCRIPTS_REPO_URL to $SCRIPTS_DIR..."
+    git clone "$SCRIPTS_REPO_URL" "$SCRIPTS_DIR" || exit 1
+fi
 
 #echo -e "\n=> Rust init..."
 #sudo pacman -S rustup || exit 1

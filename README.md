@@ -12,10 +12,11 @@ Small Arch Linux bootstrap scripts for base setup, desktop apps, and a few dev h
 ## Suggested order
 
 1) `install_base.sh` - core system packages and services
-2) `install_paru.sh` - AUR helper
-3) `install_desktop.sh` - desktop apps + AUR apps
-4) `build_suckless.sh` - optional local builds (st/dmenu)
-5) `build_nvim_from_source.sh` - optional Neovim build
+2) `install_amd_nvidia.sh` - AMD Ryzen + NVIDIA stack (microcode, drivers, Vulkan/OpenCL, Docker runtime integration)
+3) `install_paru.sh` - AUR helper
+4) `install_desktop.sh` - desktop apps + AUR apps
+5) `build_suckless.sh` - optional local builds (st/dmenu)
+6) `build_nvim_from_source.sh` - optional Neovim build
 
 ## Usage
 
@@ -29,6 +30,12 @@ AUR helper:
 
 ```bash
 ./install_paru.sh
+```
+
+AMD Ryzen + NVIDIA:
+
+```bash
+./install_amd_nvidia.sh
 ```
 
 Desktop apps:
@@ -59,4 +66,4 @@ Edit `config.sh` to change the git clone path, GitHub username, or tmp dir.
 ## Notes
 
 - These scripts are designed to be idempotent and safe to re-run.
-- `install_base.sh` enables NetworkManager, Bluetooth, and PipeWire services.
+- `install_base.sh` enables NetworkManager, Bluetooth, Docker, and PipeWire services.

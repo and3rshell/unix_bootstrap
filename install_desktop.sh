@@ -20,12 +20,13 @@ pacman_packages=(
     "xcape"
     "xclip"
     "yt-dlp"
+    "xsecurelock"
     "zathura"
     "zathura-pdf-mupdf"
     "poppler"
     "fzf"
     # "gparted"
-    "ueberzug"
+    "ueberzugpp"
     "mediainfo"
     "bat"
     "ffmpeg"
@@ -60,27 +61,25 @@ pacman_packages=(
     "npm"
     "wmname"
     "go"
+    "telegram-desktop"
+    "signal-desktop"
+    "thunderbird"
     # "csvlens"
-
-    #"chromium"
-
+    "chromium"
     "gtk2"
     "gtk3"
-    # "gtk4"
+    "gtk4"
     "lxappearance"
     "qt5ct"
     "python-qdarkstyle"
-
     # "ttf-linux-libertine"
     # "ttf-font-awesome"
     # "ttf-dejavu"
     "ttc-iosevka"
     #"noto-fonts"
     #"noto-fonts-emoji"
-
     "python"
     "python-pip"
-
     "lazygit"
     "btop"
     "keepassxc"
@@ -90,9 +89,6 @@ pacman_packages=(
     "dust"
     "github-cli"
     "xdotool"
-
-#"networkmanager-vpnc"
-#"vpnc"
 )
 
 sudo pacman -Syu "${PACMAN_FLAGS[@]}" "${pacman_packages[@]}" || exit 1
@@ -108,17 +104,26 @@ paru_packages=(
     "nsxiv"
     "mmv-go"
     "veracrypt-console-bin"
-
     # "burpsuite"
     # "postman-bin"
     "brave-bin"
     "obsidian-bin"
+    "antigravity"
+    "catppuccin-gtk-theme-git"
     # "noto-color-emoji-fontconfig"
 )
 
 for paru_package in "${paru_packages[@]}"; do
     paru -S --noconfirm "$paru_package"
 done
+
+echo -e "\n=> Installing Codex CLI (@openai/codex)..."
+if npm install -g @openai/codex; then
+    echo "Codex CLI install complete."
+else
+    echo "Retrying Codex CLI install with sudo..."
+    sudo npm install -g @openai/codex || exit 1
+fi
 
 echo -e "\nlsblk"
 echo "sudo mount -t vfat /dev/sdbX /mnt/second-usb -o rw,umask=0000"
