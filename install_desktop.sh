@@ -66,6 +66,7 @@ pacman_packages=(
     "thunderbird"
     # "csvlens"
     "chromium"
+    "firefox"
     "gtk3"
     "gtk4"
     "lxappearance"
