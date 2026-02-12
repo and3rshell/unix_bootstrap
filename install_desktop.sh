@@ -24,6 +24,7 @@ pacman_packages=(
     "zathura-pdf-mupdf"
     "poppler"
     "fzf"
+    "lf"
     # "gparted"
     "ueberzugpp"
     "mediainfo"
@@ -94,7 +95,6 @@ sudo pacman -Syu "${PACMAN_FLAGS[@]}" "${pacman_packages[@]}" || exit 1
 paru_packages=(
     "gtk2"
     "tmux-git"
-    "lf-bin"
     "zsh-fast-syntax-highlighting"
     "zsh-system-clipboard-git"
     # "simple-mtpfs"
