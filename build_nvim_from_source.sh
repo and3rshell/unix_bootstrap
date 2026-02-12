@@ -8,7 +8,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 NVIM_TMP_DIR="$TMP_DIR/neovim"
 
-killall -9 nvim
+if pgrep -x nvim >/dev/null; then
+    killall -9 nvim
+fi
 
 rm -rf "$NVIM_TMP_DIR"
 trap 'rm -rf "$NVIM_TMP_DIR"' EXIT
