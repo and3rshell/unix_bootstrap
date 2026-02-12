@@ -98,11 +98,8 @@ fi
 SCRIPTS_REPO_URL="git@github.com:${GIT_USERNAME}/scripts.git"
 SCRIPTS_DIR="$HOME/.local/scripts"
 
-if [ -d "$SCRIPTS_DIR/.git" ]; then
-    echo -e "\n=> Updating scripts repo in $SCRIPTS_DIR..."
-    git -C "$SCRIPTS_DIR" pull --ff-only || exit 1
-elif [ -d "$SCRIPTS_DIR" ]; then
-    echo -e "\n=> $SCRIPTS_DIR exists and is not a git repo; skipping clone."
+if [ -d "$SCRIPTS_DIR" ]; then
+    echo -e "\n=> $SCRIPTS_DIR already exists; skipping clone."
 else
     echo -e "\n=> Cloning $SCRIPTS_REPO_URL to $SCRIPTS_DIR..."
     git clone "$SCRIPTS_REPO_URL" "$SCRIPTS_DIR" || exit 1

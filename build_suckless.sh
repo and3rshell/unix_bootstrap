@@ -12,12 +12,12 @@ usage() {
     echo "Usage: $0 [--all] [--st] [--dmenu]"
 }
 
-clone_or_update() {
+clone_if_missing() {
     local repo_url="$1"
     local repo_dir="$2"
 
-    if [ -d "$repo_dir/.git" ]; then
-        git -C "$repo_dir" pull --rebase
+    if [ -d "$repo_dir" ]; then
+        echo "==> $repo_dir already exists; skipping clone"
         return
     fi
 
@@ -30,7 +30,7 @@ build_repo() {
     local repo_dir="$3"
 
     echo "==> Building $name"
-    clone_or_update "$repo_url" "$repo_dir"
+    clone_if_missing "$repo_url" "$repo_dir"
     sudo make -C "$repo_dir" install
 }
 

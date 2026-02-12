@@ -65,7 +65,6 @@ pacman_packages=(
     "thunderbird"
     # "csvlens"
     "chromium"
-    "gtk2"
     "gtk3"
     "gtk4"
     "lxappearance"
@@ -93,6 +92,7 @@ pacman_packages=(
 sudo pacman -Syu "${PACMAN_FLAGS[@]}" "${pacman_packages[@]}" || exit 1
 
 paru_packages=(
+    "gtk2"
     "tmux-git"
     "lf-bin"
     "zsh-fast-syntax-highlighting"
