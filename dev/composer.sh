@@ -2,16 +2,15 @@
 
 set -euo pipefail
 
+PACMAN_FLAGS=(--needed --noconfirm)
+
+echo "=> Installing Composer..."
+sudo pacman -Syu "${PACMAN_FLAGS[@]}" php composer
+
 if [ "$#" -eq 0 ]; then
-    echo "Usage: $0 <package> [package...]"
-    exit 1
+    echo "Composer installed. Pass package names to install global Composer packages."
+    exit 0
 fi
 
-echo "Make sure you have composer config dotfile first."
-read -rp "Continue? [y/N] " answer
-
-if [ "$answer" != "y" ]; then
-   exit 1
-fi
-
+echo "=> Installing global Composer packages..."
 composer global require "$@"

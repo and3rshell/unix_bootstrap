@@ -114,8 +114,11 @@ paru_packages=(
 )
 
 for paru_package in "${paru_packages[@]}"; do
-    paru -S --noconfirm "$paru_package"
+    paru -S --needed --noconfirm "$paru_package"
 done
+
+echo -e "\n=> Ensuring required zsh plugins are installed..."
+paru -S --needed --noconfirm zsh-fast-syntax-highlighting zsh-system-clipboard-git || exit 1
 
 echo -e "\n=> Installing Codex CLI (@openai/codex)..."
 if npm install -g @openai/codex; then
