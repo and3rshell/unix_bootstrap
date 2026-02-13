@@ -26,6 +26,7 @@ corePackages=(
     "base-devel"
     "curl"
     "wget"
+    "expac"
     "cmake"
     "go"
     "socat"

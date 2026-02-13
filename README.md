@@ -15,8 +15,9 @@ Small Arch Linux bootstrap scripts for base setup, desktop apps, and a few dev h
 2) `install_amd_nvidia.sh` - AMD Ryzen + NVIDIA stack (microcode, drivers, Vulkan/OpenCL, Docker runtime integration)
 3) `install_paru.sh` - AUR helper
 4) `install_desktop.sh` - desktop apps + AUR apps
-5) `build_suckless.sh` - optional local builds (st/dmenu)
-6) `build_nvim_from_source.sh` - optional Neovim build
+5) `install_optional_apps.sh` - optional heavy apps (LibreOffice, GIMP, csvlens, Burp Suite, Postman)
+6) `build_suckless.sh` - optional local builds (st/dmenu)
+7) `build_nvim_from_source.sh` - optional Neovim build
 
 ## Usage
 
@@ -42,6 +43,12 @@ Desktop apps:
 
 ```bash
 ./install_desktop.sh
+```
+
+Optional apps:
+
+```bash
+./install_optional_apps.sh
 ```
 
 Suckless builds:
