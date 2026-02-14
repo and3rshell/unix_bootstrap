@@ -5,9 +5,9 @@ set -euo pipefail
 PACMAN_FLAGS=(--needed --noconfirm)
 
 pacman_optional_packages=(
-    "libreoffice"
+    "libreoffice-fresh"
     "gimp"
-    "csvlens"
+    "obs-studio"
 )
 
 paru_optional_packages=(
@@ -15,7 +15,7 @@ paru_optional_packages=(
     "postman-bin"
 )
 
-sudo pacman -Syu "${PACMAN_FLAGS[@]}" "${pacman_optional_packages[@]}" || exit 1
+sudo pacman -Sy "${PACMAN_FLAGS[@]}" "${pacman_optional_packages[@]}" || exit 1
 
 if ! command -v paru >/dev/null 2>&1; then
     echo "paru is not installed. Run ./install_paru.sh first."
